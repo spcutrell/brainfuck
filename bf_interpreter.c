@@ -5,17 +5,12 @@
 
 #define MAX 30000
 
-struct node {
-        char val;
-        struct node *next;
-};
-
+/*
+ * TO DO:
+ * This needs cleaned up in a bad way.
+*/
 void input(int, char **, char *);
 void intrptr(char *s1, int *s2);
-struct node *stackinit();
-void push(char c, struct node **head);
-char pop(struct node **head);
-void delstack(struct node **head);
 
 int main(int argc, char **argv)
 {
@@ -55,6 +50,12 @@ void input(int argc, char **argv, char *s)
         }
 }
 
+/*
+ * TO DO
+ * Stack should be used for the brackets.  My way is more dumb.  We'll use this
+ * sometime in the near future once the novelty of a working interpreter has
+ * worn off.
+*/
 void intrptr(char *input_arr, int *instr_arr)
 {
         int *ptr = instr_arr;
@@ -99,29 +100,3 @@ void intrptr(char *input_arr, int *instr_arr)
         }
 }
 
-// Stack Functions 
-void push(char c, struct node **head)
-{
-        return;
-}
-
-char pop(struct node **head)
-{
-        return 0;
-}
-
-struct node *stackinit()
-{
-        struct node *head;
-        head = malloc(sizeof(struct node)); 
-        head->val = '\0';
-        head->next = NULL;
-        return head;
-}
-
-void delstack(struct node **head)
-{
-        struct node *cur = *head;
-        // Finish Me
-        return;
-}
