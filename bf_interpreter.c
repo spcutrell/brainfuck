@@ -8,95 +8,108 @@
 /*
  * TO DO:
  * This needs cleaned up in a bad way.
-*/
+ */
 void input(int, char **, char *);
 void intrptr(char *s1, int *s2);
 
 int main(int argc, char **argv)
 {
-        char input_arr[MAX*sizeof(char)];
-        int instr_arr[MAX] = {0};
+    char instr_arr[MAX*sizeof(char)];
+    int result_arr[MAX] = {0};
 
-        input(argc, argv, input_arr);
-        intrptr(input_arr, instr_arr);
+    input(argc, argv, instr_arr);
+    intrptr(instr_arr, result_arr);
 
-        return 0;
+    return 0;
 
 }
 
 void input(int argc, char **argv, char *s)
 {
-        FILE *input;
-        if (argc > 1) {
-                if (!strcmp(argv[1],"-")) {
-                        input = stdin;
-                } else {
-                        input = fopen(argv[1], "r");
-                        if (!input) {
-                                fprintf(stderr, "Unable to open '%s': %s\n",
-                                                argv[1], strerror(errno));
-                                exit(EXIT_FAILURE);
-                        }
-                }
+    FILE *input;
+    if (argc > 1) {
+        if (!strcmp(argv[1],"-")) {
+            input = stdin;
         } else {
-                input = stdin;
+            input = fopen(argv[1], "r");
+            if (!input) {
+                fprintf(stderr, "Unable to open '%s': %s\n",
+                        argv[1], strerror(errno));
+                exit(EXIT_FAILURE);
+            }
         }
-        char c;
-        while (((c=fgetc(input))!=EOF)) {
-                if(c != '\n') {
-                        *s=c;
-                        s++;
-                }
+    } else {
+        input = stdin;
+    }
+    char c;
+    while ( (c=fgetc(input))!=EOF ) {
+        if(
+                c == '>' ||
+                c == '<' ||
+                c == '+' ||
+                c == '-' ||
+                c == '.' ||
+                c == ',' ||
+                c == '[' ||
+                c == ']'
+          ) {
+            *s=c;
+            s++;
         }
+    }
 }
 
 /*
  * TO DO
- * Stack should be used for the brackets.  My way is more dumb.  We'll use this
+ * Stack should be used for the brackets.  My way is dumb.  We'll use this
  * sometime in the near future once the novelty of a working interpreter has
  * worn off.
-*/
-void intrptr(char *input_arr, int *instr_arr)
+ */
+void intrptr(char *instr_arr, int *result_arr)
 {
-        int *ptr = instr_arr;
-        int instr = 0;
-        int brackets[MAX];
+    int *ptr = result_arr;
+    int instr = 0;
+    int brackets[MAX];
 
-        int i;
-        char c;
-        for (i=0; (c=input_arr[i])!=EOF; ++i) {
-                switch(c) {
-                        case '>' :
-                                ++ptr;
-                                break;
-                        case '<' :
-                                --ptr;
-                                break;
-                        case '+' :
-                                ++*ptr;
-                                break;
-                        case '-' :
-                                --*ptr;
-                                break;
-                        case '.' :
-                                putchar(*ptr);
-                                break;
-                        case ',' :
-                                *ptr = getchar(); 
-                                break;
-                        case '[' :
-                                brackets[instr++]=i; 
-                                break;
-                        case ']' :
-                                if (*ptr>0) {
-                                        i=brackets[--instr]; 
-                                        --i;
-                                }
-                                break;
-                        default  :
-                                break;
-
+    int i;
+    char c;
+    for (i=0; (c=instr_arr[i]); ++i) {
+        switch(c) {
+            case '>' :
+                ++ptr;
+                break;
+            case '<' :
+                --ptr;
+                break;
+            case '+' :
+                ++*ptr;
+                break;
+            case '-' :
+                --*ptr;
+                break;
+            case '.' :
+                putchar(*ptr);
+                break;
+            case ',' :
+                *ptr = getchar(); 
+                break;
+            case '[' :
+                if (*ptr>0) {
+                    brackets[instr++]=i; 
+                } else {
+                    while (instr_arr[i] != ']') ++i;
                 }
+                break;
+            case ']' :
+                if (*ptr>0) {
+                    i=brackets[--instr]; 
+                    --i;
+                }
+                break;
+            default  :
+                break;
+
         }
+    }
 }
 
