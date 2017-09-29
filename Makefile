@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -Wextra
-SOURCE=bf_interpreter.c
-TARGET=bf_interpreter
+SOURCE=cbrain.c
+TARGET=cbrain
 
 all:
 	$(CC) -o $(TARGET) $(CFLAGS) $(SOURCE) 

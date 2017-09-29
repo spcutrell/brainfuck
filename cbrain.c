@@ -94,14 +94,14 @@ void intrptr(char *instr_arr, int *result_arr)
                 *ptr = getchar(); 
                 break;
             case '[' :
-                if (*ptr>0) {
+                if (*ptr) {
                     brackets[instr++]=i; 
                 } else {
                     while (instr_arr[i] != ']') ++i;
                 }
                 break;
             case ']' :
-                if (*ptr>0) {
+                if (*ptr) {
                     i=brackets[--instr]; 
                     --i;
                 }
