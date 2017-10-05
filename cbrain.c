@@ -5,10 +5,6 @@
 
 #define MAX 30000
 
-/*
- * TO DO:
- * This needs cleaned up in a bad way.
- */
 void input(int, char **, char *);
 void intrptr(char *s1, int *s2);
 
@@ -42,7 +38,7 @@ void input(int argc, char **argv, char *s)
         input = stdin;
     }
     char c;
-    while ( (c=fgetc(input))!=EOF ) {
+    while ( (c=fgetc(input)) != EOF ) {
         if(
                 c == '>' ||
                 c == '<' ||
@@ -59,16 +55,11 @@ void input(int argc, char **argv, char *s)
     }
 }
 
-/*
- * TO DO
- * Stack should be used for the brackets.  My way is dumb.  We'll use this
- * sometime in the near future once the novelty of a working interpreter has
- * worn off.
- */
 void intrptr(char *instr_arr, int *result_arr)
 {
     int *ptr = result_arr;
     int instr = 0;
+    int bal = 0;
     int brackets[MAX];
 
     int i;
@@ -94,16 +85,25 @@ void intrptr(char *instr_arr, int *result_arr)
                 *ptr = getchar(); 
                 break;
             case '[' :
-                if (*ptr) {
-                    brackets[instr++]=i; 
+                if (!*ptr) {
+                    bal = 1;
+                    while (bal) {
+                        ++i;
+                        if (instr_arr[i] == '[') {
+                            ++bal;
+                        } else if (instr_arr[i] == ']') {
+                            --bal;
+                        }
+                    }
                 } else {
-                    while (instr_arr[i] != ']') ++i;
+                    brackets[instr++]=i; 
                 }
                 break;
             case ']' :
                 if (*ptr) {
-                    i=brackets[--instr]; 
-                    --i;
+                    i=brackets[--instr] - 1; 
+                } else {
+                    --instr;
                 }
                 break;
             default  :
