@@ -6,12 +6,12 @@
 #define MAX 30000
 
 void input(int, char **, char *);
-void intrptr(char *s1, int *s2);
+void intrptr(char *s1, unsigned int *s2);
 
 int main(int argc, char **argv)
 {
     char instr_arr[MAX*sizeof(char)];
-    int result_arr[MAX] = {0};
+    unsigned int result_arr[MAX] = {0};
 
     input(argc, argv, instr_arr);
     intrptr(instr_arr, result_arr);
@@ -55,12 +55,12 @@ void input(int argc, char **argv, char *s)
     }
 }
 
-void intrptr(char *instr_arr, int *result_arr)
+void intrptr(char *instr_arr, unsigned int *result_arr)
 {
-    int *ptr = result_arr;
+    unsigned int *ptr = result_arr;
     int instr = 0;
     int bal = 0;
-    int brackets[MAX];
+    unsigned int brackets[MAX];
 
     int i;
     char c;
