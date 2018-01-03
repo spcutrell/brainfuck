@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra
+CFLAGS=-Wall -Wextra -Ofast
 SOURCE=cbrain.c
 TARGET=cbrain
 
